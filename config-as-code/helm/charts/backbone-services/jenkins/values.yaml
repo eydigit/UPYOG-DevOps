@@ -17,13 +17,13 @@ oauth:
   enabled: false
   acl:
     admin: 
-      - egovernments*micro-service-devops
+      - eydigit*micro-service-devops
     user: 
-      - egovernments*micro-service-dev
+      - eydigit*micro-service-dev
 
 jobBuilder:
   repos: >-
-    'git@github.com:egovernments/core-services.git','git@github.com:egovernments/business-services.git'
+    'git@github.com:eydigit/core-services.git','git@github.com:eydigit/business-services.git'
 
 master:
   httpsKeyStore:
@@ -411,7 +411,7 @@ master:
                   scm:
                     git:
                       credentialsId: "git_read"
-                      remote: "git@github.com:egovernments/CIOps.git"
+                      remote: "git@github.com:eydigit/CIOps.git"
                       traits:
                       - "gitBranchDiscovery"
       system-message: | 
@@ -476,21 +476,21 @@ master:
                   cps {
                       script("""library 'ci-libs'
               {{- if (eq $job.name "central-instance") }}            
-              deployer(repo:'git@github.com:egovernments/DIGIT-DevOps.git', branch: 'central-instance', helmDir: 'deploy-as-code/helm', environment: '{{ $job.name }}')""")
+              deployer(repo:'git@github.com:eydigit/ey-DevOps.git', branch: 'central-instance', helmDir: 'deploy-as-code/helm', environment: '{{ $job.name }}')""")
                       sandbox() 
                     }
                 }
                 disabled(false)
               }
               {{- else if (eq $job.name "bootcamp") }}            
-              deployer(repo:'git@github.com:nikhilmulinti-egov/DIGIT-DevOps.git', branch: 'DIGIT-Bootcamp', helmDir: 'config-as-code/helm', environment: '{{ $job.name }}')""")
+              deployer(repo:'git@github.com:eydigit/ey-DevOps.git', branch: 'UPYOG-Bootcamp', helmDir: 'config-as-code/helm', environment: '{{ $job.name }}')""")
                       sandbox() 
                     }
                 }
                 disabled(false)
               }
               {{- else }}
-              deployer(repo:'git@github.com:egovernments/DIGIT-DevOps.git', branch: 'master', helmDir: 'deploy-as-code/helm', environment: '{{ $job.name }}')""")
+              deployer(repo:'git@github.com:eydigit/ey-DevOps.git', branch: 'master', helmDir: 'deploy-as-code/helm', environment: '{{ $job.name }}')""")
                       sandbox() 
                     }
                 }
