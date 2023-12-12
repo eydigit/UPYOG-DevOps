@@ -17,7 +17,7 @@ jenkins:
   persistence:
     enabled: true
     aws:
-      - volumeId: "vol-0123c752c5c2451fc" # Add volume id for jenkins-home
+      - volumeId: "vol-0dae72bc3dbdb1935" # Add volume id for jenkins-home
         zone: ap-south-1b # Add respective availability_zones 
 
   oauth:
@@ -29,7 +29,7 @@ jenkins:
         - ey-upyog*micro-service-dev
         - ey-upyog*micro-service-qa
         - ey-upyog*micro-service-uat
-
+       
   jobBuilder:
     repos: >-
       'git@github.com:ey-upyog/UPYOG.git'
@@ -41,8 +41,7 @@ jenkins:
     - name: master
       acl: [eydigit*micro-service-devops]
     - name: unified-master
-
-
+     
   master:
     ingress:
       enabled: true
@@ -51,7 +50,7 @@ jenkins:
         cpu: "3500m"
         memory: "7120Mi"
     javaOpts: "-Xms3100M -Xmx3100M -Duser.timezone=Asia/Calcutta"
-
+    
 nginx-ingress:
   replicas: 1
   default-backend-service: "jenkins/jenkins"
@@ -67,56 +66,16 @@ nginx-ingress:
 
 cert-manager:
   namespace: jenkins
-  email: "ey.digit@gmail.com"
+  clusterIssuer:
+    stage:
+      acme:
+        email: "ey.digit@gmail.com"     # Add mail id
 
 cluster-autoscaler:
   namespace: jenkins
   cloudProvider: aws  
   awsRegion: ap-south-1
   autoDiscovery:
-    clusterName: ernstjenkins-cicd
+    clusterName: egov-cicd # Add cluster name
     tags:
-    - kubernetes.io/cluster/egov-cicd
-
-postgres:
-  namespace: jenkins
-  postgresDatabase: ci_database
-
-grafana: 
-  image:
-    repository: grafana/grafana
-    tag: 9.0.0
-
-  initContainers:
-    gitSync:
-      enabled: true
-      repo: "git@github.com:egovernments/monitoring"
-      branch: "master"
-
-  ingress:
-    hostName: monitoring.wontract.com 
-    hostName: monitoring.wontract.com 
-    context: ""
-    additionalAnnotations: | 
-
-  grafana.ini:
-    server:
-      root_url: "%(protocol)s://%(domain)s"
-      serve_from_sub_path: true 
-
-  env: |
-    - name: GF_SERVER_DOMAIN
-      value: {{ .Values.ingress.hostName | quote }}    
-
-  datasources: 
-    datasources.yaml:
-      apiVersion: 1
-      datasources:
-      - name: DIGIT-Dev
-        type: prometheus
-        url: https://prometheus-dev.wontract.com
-        isDefault: false 
-     
-
-
-       
+    - kubernetes.io/cluster/egov-cicd # Add cluster name
